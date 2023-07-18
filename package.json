@@ -1,0 +1,53 @@
+{
+  "name": "invoice-management-system",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@material-tailwind/react": "^2.0.3",
+    "@react-pdf/renderer": "^3.1.12",
+    "axios": "^1.4.0",
+    "dayjs": "^1.11.8",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dom": "^18.2.0",
+    "react-google-autocomplete": "^2.7.3",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^4.9.0",
+    "react-paginate": "^8.2.0",
+    "react-pdf": "^7.1.2",
+    "react-pdf-js": "^5.1.0",
+    "react-router-dom": "^6.13.0",
+    "react-select": "^5.7.3",
+    "react-tailwindcss-datepicker": "^1.6.3",
+    "reactjs-popup": "^2.0.5",
+    "sweetalert2": "^11.7.12",
+    "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.14",
+    "daisyui": "latest",
+    "eslint-config-standard": "latest",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "latest",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2",
+    "vite": "^4.3.9"
+  }
+}

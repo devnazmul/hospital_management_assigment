@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CUSTOM CSS  */
+html {
+  scroll-behavior: smooth;
+}
+.pdfviewer-toolbar {
+  display: none;
+}
+/* CUSTOM SCROLLBAR  */
+.scrollbar::-webkit-scrollbar {
+  background-color: #dddddd !important;
+  width: 5px;
+  border-radius: 30px;
+}
+.scrollbar::-webkit-scrollbar-button {
+  display: none;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #db2780;
+  border-radius: 30px;
+}
+.addCustomerPopup-content::-webkit-scrollbar {
+  background-color: #dddddd !important;
+  width: 5px;
+  border-radius: 30px;
+}
+.addCustomerPopup-content::-webkit-scrollbar-button {
+  display: none;
+}
+.addCustomerPopup-content::-webkit-scrollbar-thumb {
+  background-color: #db2780;
+  border-radius: 30px;
+}
+
+.scrollbarVer::-webkit-scrollbar {
+  background-color: #dddddd !important;
+  width: 5px;
+  height: 5px;
+  border-radius: 30px;
+}
+.scrollbarVer::-webkit-scrollbar-button {
+  display: none;
+}
+.scrollbarVer::-webkit-scrollbar-thumb {
+  background-color: #db2780;
+  border-radius: 30px;
+}
+
+/* REACT DATE PICKER  */
+.react-datepicker__popover {
+  background-color: red;
+}
+
+.activeNavLink span .icon {
+  color: #db2780;
+}
+
+/* CUSTOM POPUP  */
+.addCustomerPopup-content {
+  overflow: hidden;
+  border: 3px solid #fff;
+  overflow-y: auto;
+  box-shadow: 1px 1px 5px #333;
+  width: 500px;
+  height: 400px;
+  border-radius: 20px;
+  position: relative;
+}
+
+@media (max-width: 700px) {
+  .addCustomerPopup-content {
+    width: 90%;
+  }
+}
