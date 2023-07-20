@@ -115,7 +115,7 @@ export default function Login() {
               Login
             </h2>
             <p className="text-center text-white my-3">
-              Want to manage your realstate business? Please login.
+              Want to manage your appointment with doctors? Please login.
             </p>
             <div className="h-full w-full">
               <div className="my-3 flex flex-col w-full relative">
