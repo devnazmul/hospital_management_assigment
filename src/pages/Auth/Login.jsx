@@ -14,8 +14,8 @@ export default function Login() {
   const { setIsAuthenticated, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: 'admin@gmail.com',
-    password: '12345678',
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState({});
 
