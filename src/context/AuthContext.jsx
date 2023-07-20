@@ -28,10 +28,9 @@ export const AuthProvider = ({ children }) => {
     // setInterval(() => {
     const token = localStorage.getItem('token');
     if (isAuthenticated || token) {
-      console.log('checking');
       getUserByToken()
         .then((res) => {
-          localStorage.setItem('userData', JSON.stringify(res));
+          localStorage.setItem('userData', JSON.stringify(res?.data));
           localStorage.setItem('token', res?.token);
           setIsAuthenticated(true);
         })

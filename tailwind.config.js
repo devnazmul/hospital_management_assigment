@@ -22,11 +22,11 @@ export default
         "dark",
         {
           customLight: {
-            "primary": "#ffffff",
-            "secondary": "#db2780",
+            "primary": "#2784ff",
+            "secondary": "#ff5500",
             "accent": "#10b981",
             "neutral": "#374151",
-            "base-100": "#0575b4",
+            "base-100": "#ffffff",
             "blue": "#0575b4",
             "info": "#38bdf8",
             "success": "#34d399",

@@ -6,7 +6,7 @@
 import axios from 'axios';
 
 // GET APIS =====================================================
-export const getUserByToken = async () => {
+export const getAllAppointments = async () => {
   const jwt = localStorage.getItem('token')
   const config = {
     headers: {
@@ -15,7 +15,7 @@ export const getUserByToken = async () => {
       "Authorization": `Bearer ${jwt}`
     },
   };
-  return await axios.get(`/api/v1/auth/get-withjwt`, config)
+  return await axios.get(`/api/v1/appointment/get-all`, config)
     .then(res => {
       return res?.data;
     })
@@ -23,42 +23,10 @@ export const getUserByToken = async () => {
       throw err
     })
 }
-export const getDashboardData = async () => {
-  const jwt = localStorage.getItem('token')
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      'Accept': 'application/json',
-      "Authorization": `Bearer ${jwt}`
-    },
-  };
-  return await axios.get(`/api/v1/auth/dashboard`, config)
-    .then(res => {
-      return res?.data;
-    })
-    .catch(err => {
-      throw err
-    })
-}
-export const getUserByRole = async (role) => {
-  const jwt = localStorage.getItem('token')
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      'Accept': 'application/json',
-      "Authorization": `Bearer ${jwt}`
-    },
-  };
-  return await axios.get(`/api/v1/auth/get-all/${role}`, config)
-    .then(res => {
-      return res?.data;
-    })
-    .catch(err => {
-      throw err
-    })
-}
+
+
 // POST APIS =====================================================
-export const registration = async (data) => {
+export const createAppointment = async (data) => {
   const jwt = localStorage.getItem('token')
   const config = {
     headers: {
@@ -68,7 +36,7 @@ export const registration = async (data) => {
     },
   };
   
-  return await axios.post(`/api/v1/auth/registration`, data, config)
+  return await axios.post(`/api/v1/appointment/create`, data, config)
     .then(res => {
       return res?.data;
     })

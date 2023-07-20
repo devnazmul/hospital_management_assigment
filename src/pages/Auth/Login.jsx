@@ -4,7 +4,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../../apis/auth/auth';
 import CustomToaster from '../../components/CustomToaster';
 import { AuthContext } from '../../context/AuthContext';
@@ -45,17 +45,6 @@ export default function Login() {
       newErrors.email = 'Invalid email';
     }
 
-    // Validate password
-    // if (!formData.password || formData.password.trim() === '') {
-    //   console.log(formData);
-    //   newErrors.password = 'Password is required';
-    // } else if (
-    //   !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(formData.password)
-    // ) {
-    //   newErrors.password =
-    //     'Password must be at least 8 characters long and contain at least 1 number, 1 lowercase letter, and 1 uppercase letter';
-    // }
-
     setErrors(newErrors);
 
     // Return true if there are no errors
@@ -73,7 +62,7 @@ export default function Login() {
     login(formData)
       .then((res) => {
         localStorage.setItem('userData', JSON.stringify(res?.data));
-        localStorage.setItem('token', res?.data?.token);
+        localStorage.setItem('token', res?.token);
         setIsAuthenticated(true);
         setTimeout(() => {
           setIsLoading(false);
@@ -113,8 +102,14 @@ export default function Login() {
         src={'/assets/login.jpg'}
         alt=""
       />
-      <div className="w-full h-full flex justify-end items-center p-5">
-        <div className="card h-full w-full md:w-1/3 glass">
+      <div className="w-full h-full flex justify-between items-center p-5">
+        <div className='z-10 text-base-100 pl-10 pr-20 text-xl glass h-[500px] w-[700px] rounded-xl flex flex-col justify-center'>
+          <h1 className='text-6xl text-base-100 font-bold mb-10'>Your Trusted Hospital</h1>
+          <p>Our Hospital is one of the best Hospital in this city.</p>
+          <p>To get our best service please login to our system.</p>
+          <p>You can request for appoinment with a doctor from your home.</p>
+        </div>
+        <div className="card h-[500px] w-full md:w-1/3 glass">
           <div className="card-body">
             <h2 className="font-semibold text-4xl text-center text-white">
               Login
@@ -169,10 +164,7 @@ export default function Login() {
                 )}
               </div>
 
-              <div className="text-primary">
-                Didn't have an account?{' '}
-                <NavLink className={'text-base-100'} to={`/auth/registration`}>Create account?</NavLink>
-              </div>
+              
             </div>
             <div className="card-actions justify-end">
               <button

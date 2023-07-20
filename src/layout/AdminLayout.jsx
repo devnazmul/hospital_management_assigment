@@ -10,7 +10,6 @@ import { AuthContext } from '../context/AuthContext';
 import { useInvoiceDetails } from '../context/InvoiceContext';
 import Navbar from './Navbar/Navbar';
 import AdminLayoutSidebar from './SideBar/AdminLayoutSidebar';
-import SuperAdminLayoutSidebar from './SideBar/SuperAdminLayoutSidebar';
 
 export default function AdminLayout() {
   const { isAuthenticated, setIsRouteChange } = useContext(AuthContext);
@@ -73,7 +72,6 @@ export default function AdminLayout() {
     setSelectedCustomerWithDetals({});
     setSelectedPropertyWithDetals({});
   }, [location.pathname]);
-  const user_role = JSON.parse(localStorage.getItem('userData'));
   return (
     <>
       {isLoading ? (
@@ -88,13 +86,7 @@ export default function AdminLayout() {
             className={
               'h-full rounded-md overflow-hidden shadow-sm hidden md:block md:w-2/12'
             }>
-            {user_role?.roles?.length > 0 &&
-            // user_role?.roles[0].name === 'admin' ? (
-            user_role?.roles[0].name === 'superadmin' ? (
-              <SuperAdminLayoutSidebar />
-            ) : (
-              <AdminLayoutSidebar />
-            )}
+            <AdminLayoutSidebar />
           </aside>
           <div className={'w-full md:w-10/12 h-full'}>
             <nav className={``}>

@@ -13,17 +13,17 @@ import ErrorPage from './ErrorPage';
 import './index.css';
 import AdminLayout from './layout/AdminLayout';
 import AuthenticationPublicLayout from './layout/AuthenticationPublicLayout';
-import AppointmentForAssistant from './pages/Assistant/Appointment/AppointmentForAssistant';
-import CreateAppointment from './pages/Assistant/Appointment/CreateAppointment';
+import Appointment from './pages/Appointment/Appointment';
 import Login from './pages/Auth/Login';
-import Registration from './pages/Auth/Registration';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Schedule from './pages/Schedule/Schedule';
+import UserList from './pages/UserList/UserList';
 
-axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}/api/v1.0`;
+axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
 // DECLER ALL ROUTES HERE
-const user_role = JSON.parse(localStorage.getItem('userData'));
+const user = JSON.parse(localStorage.getItem('userData'));
 let router;
-if (user_role === 'assistant') {
+if (user?.role === 'assistant') {
   router = createBrowserRouter([
     {
       path: '/',
@@ -32,11 +32,15 @@ if (user_role === 'assistant') {
       children: [
         {
           path: '/',
-          element: <AppointmentForAssistant/>,
+          element: <Dashboard/>,
         }, 
         {
-          path: '/',
-          element: <CreateAppointment/>,
+          path: '/appointment',
+          element: <Appointment/>,
+        }, 
+        {
+          path: '/user/:role',
+          element: <UserList/>,
         }, 
       ],
     },
@@ -52,14 +56,12 @@ if (user_role === 'assistant') {
           path: '/auth/login',
           element: <Login />,
         },
-        {
-          path: '/auth/registration',
-          element: <Registration />,
-        },
       ],
     },
   ]);
-} else {
+} 
+
+else if (user?.role === 'doctor') {
   router = createBrowserRouter([
     {
       path: '/',
@@ -68,14 +70,70 @@ if (user_role === 'assistant') {
       children: [
         {
           path: '/',
-          element: <Dashboard />,
-        }
+          element: <Appointment/>,
+        }, 
+        {
+          path: '/schedule',
+          element: <Schedule/>,
+        }, 
+         
       ],
     },
     {
       path: '/auth',
       element: <AuthenticationPublicLayout />,
       children: [
+        {
+          path: '/auth',
+          element: <Login />,
+        },
+        {
+          path: '/auth/login',
+          element: <Login />,
+        },
+
+      ],
+    },
+  ]);
+}else if (user?.role === 'patient') {
+  router = createBrowserRouter([
+    {
+      path: '/',
+      element: <AdminLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '/',
+          element: <Appointment/>,
+        }, 
+       
+      ],
+    },
+    {
+      path: '/auth',
+      element: <AuthenticationPublicLayout />,
+      children: [
+        {
+          path: '/auth',
+          element: <Login />,
+        },
+        {
+          path: '/auth/login',
+          element: <Login />,
+        },
+      ],
+    },
+  ]);
+}else{
+  router = createBrowserRouter([
+    {
+      path: '/',
+      element: <AuthenticationPublicLayout />,
+      children: [
+        {
+          path: '/',
+          element: <Login />,
+        },
         {
           path: '/auth',
           element: <Login />,
