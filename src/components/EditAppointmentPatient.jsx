@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
 import { createAppointment } from '../apis/appointment/appointment';
 import { getUserByRole } from '../apis/auth/auth';
 import { getAllschedules } from '../apis/schedule/schedule';
-import CustomToaster from './CustomToaster';
 
 export default function CreateAppointmentPatient({
   setIsUpdated,
@@ -12,7 +10,6 @@ export default function CreateAppointmentPatient({
   const [errors, setErrors] = useState();
   const [doctors, setDoctors] = useState([]);
   const [doctorSchedules, setDoctorSchedules] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
   const [formDataForAssistant, setFormDataForAssistant] = useState({
     doctor_id: '',
   });
@@ -67,23 +64,13 @@ export default function CreateAppointmentPatient({
   };
   const handleSubmit = () => {
     if (validateForm()) {
-      setIsLoading(true)
       createAppointment(formDataForAssistant).then((res) => {
         if (res) {
-          setAddPopup(false);
+          setAddPopup(false)
           setIsUpdated(Math.random());
-          setIsLoading(false)
+
         }
-      }).catch((error)=>{
-        setIsLoading(false)
-        toast.custom((t) => (
-          <CustomToaster
-            t={t}
-            type={'error'}
-            text={`ID: #00108 - ${error?.response?.data?.message}`}
-          />
-        ));
-      })
+      });
     }
   };
   return (
@@ -115,20 +102,11 @@ export default function CreateAppointmentPatient({
           )}
         </label>
 
-        <div className={`flex justify-center items-center mt-10 gap-5`}>
-          <button
-            onClick={() => setAddPopup(false)}
-            className={`transition-all duration-150 hover:scale-90 border-2 px-5 w-32 py-1 text-base-100 rounded-full border-error bg-error shadow-md shadow-error`}>
-            Cancel
-          </button>
-          <button
-            onClick={handleSubmit}
-            className={`transition-all duration-150 text-white hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-primary bg-primary shadow-md shadow-primary`}>
-              {isLoading ? (
-              <span className="loading loading-spinner loading-md"></span>
-            ) : (
-              'Create'
-            )}
+        <div
+          className={`flex bg-base-100 w-[100%] justify-center items-center gap-5`}>
+          <button className={`btn btn-error`}>Cancel</button>
+          <button onClick={handleSubmit} className={`btn btn-primary`}>
+            Create
           </button>
         </div>
       </div>

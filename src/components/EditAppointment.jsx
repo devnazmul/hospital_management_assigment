@@ -1,46 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
-import Swal from 'sweetalert2';
 import { createAppointment } from '../apis/appointment/appointment';
 import { getUserByRole } from '../apis/auth/auth';
-import { createNotification } from '../apis/notification/notification';
 import { getAllschedules } from '../apis/schedule/schedule';
-import CustomToaster from './CustomToaster';
 
 export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
   const [errors, setErrors] = useState();
   const [doctors, setDoctors] = useState([]);
   const [doctorSchedules, setDoctorSchedules] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
   const [formDataForAssistant, setFormDataForAssistant] = useState({
     name: '',
     email: '',
-    password: '',
     doctor_id: '',
     schedule_date: '',
-    start_time: '',
-    end_time: '',
   });
 
   const onChangeFormData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
-    if (name === 'schedule_date') {
-      setFormDataForAssistant((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-        start_time: doctorSchedules.find((sche) => sche?.date === value)
-          ?.start_time,
-        end_time: doctorSchedules.find((sche) => sche?.date === value)
-          ?.end_time,
-      }));
-    } else {
-      setFormDataForAssistant((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    }
+    setFormDataForAssistant((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   //   GET ALL DOCTORS
@@ -65,8 +45,6 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
         });
     }
   }, [formDataForAssistant]);
-
-  // GET TIME
 
   //   VALIDATION
   const validateForm = () => {
@@ -106,81 +84,34 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
     ) {
       newErrors.schedule_date = 'Schedule date is required';
     }
-    // VALIDATE STARTINF TIME
-    if (
-      !formDataForAssistant.start_time ||
-      formDataForAssistant.start_time.trim() === ''
-    ) {
-      newErrors.start_time = 'Starting time is required';
-    }
-    // VALIDATE END TIME
-    if (
-      !formDataForAssistant.end_time ||
-      formDataForAssistant.end_time.trim() === ''
-    ) {
-      newErrors.end_time = 'End time is required';
-    }
-    console.log(newErrors)
+
     setErrors(newErrors);
     // Return true if there are no errors
     return Object.keys(newErrors).length === 0;
   };
-
-
   const handleSubmit = () => {
     if (validateForm()) {
-      setIsLoading(true)
       createAppointment(formDataForAssistant).then((res) => {
         if (res) {
           setAddPopup(false);
-          setIsLoading(false)
           setIsUpdated(Math.random());
-          createNotification({
-            reciver_id: formDataForAssistant?.doctor_id,
-            title: "New Appointment!",
-            message: "A new appointment is approved by the assistant please check on the appointment page"
-          }).then(res=>{
-            Swal.fire(
-              'Created!',
-              `The appointment has been approved.`,
-              'success'
-            );
-          }).catch((error)=>{
-            toast.custom((t) => (
-              <CustomToaster
-                t={t}
-                type={'error'}
-                text={`ID: #00108 - ${error?.response?.data?.message}`}
-              />
-            ));
-          })
         }
-      }).catch(error=>{
-        setIsLoading(false)
-        toast.custom((t) => (
-          <CustomToaster
-            t={t}
-            type={'error'}
-            text={`ID: #00108 - ${error?.response?.data?.message}`}
-          />
-        ));
       });
     }
   };
-
   return (
-    <div className="w-full bg-base-100 px-5">
+    <div className="w-full">
       <h1 className="text-xl font-semibold text-center my-5">
         Create Appointment
       </h1>
-      <div className="h-full w-full flex flex-col bg-base-100 gap-5">
+      <div className="h-full w-full flex flex-col gap-5">
         <label htmlFor="name" className="flex flex-col">
           <div>
             Patient Name <span className="text-red-600">*</span>
           </div>
           <input
             onChange={onChangeFormData}
-            className="bg-gray-100 w-full border-2 border-gary-300 outline-none rounded-md px-2 py-1 mt-1"
+            className="bg-transparent w-full border border-primary outline-none rounded-md px-2 py-1"
             type="text"
             name="name"
             id="name"
@@ -195,7 +126,7 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
           </div>
           <input
             onChange={onChangeFormData}
-            className="bg-gray-100 w-full border-2 border-gary-300 outline-none rounded-md px-2 py-1 mt-1"
+            className="bg-transparent w-full border border-primary outline-none rounded-md px-2 py-1"
             type="text"
             name="email"
             id="email"
@@ -204,28 +135,13 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
             <span className="text-xs text-red-600">{errors?.email}</span>
           )}
         </label>
-        <label htmlFor="password" className="flex flex-col">
-          <div>
-            Password <span className="text-red-600">*</span>
-          </div>
-          <input
-            onChange={onChangeFormData}
-            className="bg-gray-100 w-full border-2 border-gary-300 outline-none rounded-md px-2 py-1 mt-1"
-            type="password"
-            name="password"
-            id="password"
-          />
-          {errors?.password && (
-            <span className="text-xs text-red-600">{errors?.password}</span>
-          )}
-        </label>
         <label htmlFor="doctor_id" className="flex flex-col">
           <div>
             Select Doctor <span className="text-red-600">*</span>
           </div>
           <select
             onChange={onChangeFormData}
-            className="bg-gray-100 w-full border-2 border-gary-300 outline-none rounded-md px-2 py-1 mt-1"
+            className="bg-transparent w-full border border-primary outline-none rounded-md px-2 py-1"
             type="text"
             name="doctor_id"
             id="doctor_id"
@@ -247,7 +163,7 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
           </div>
           <select
             onChange={onChangeFormData}
-            className="bg-gray-100 w-full border-2 border-gary-300 outline-none rounded-md px-2 py-1 mt-1"
+            className="bg-transparent w-full border border-primary outline-none rounded-md px-2 py-1"
             type="text"
             name="schedule_date"
             id="schedule_date"
@@ -265,42 +181,17 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
             </span>
           )}
         </label>
-        <div>
-          {formDataForAssistant?.start_time &&
-          formDataForAssistant?.end_time ? (
-            <>
-              <div className="flex flex-col">
-                <span>
-                  <span className="text-primary font-semibold">
-                    Statrting time:
-                  </span>{' '}
-                  {formDataForAssistant?.start_time}
-                </span>
-                <span>
-                  <span className="text-error font-semibold">End time:</span>{' '}
-                  {formDataForAssistant?.end_time}
-                </span>
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
-        </div>
 
-        <div className={`flex justify-center items-center mb-10 gap-5`}>
+        <div
+          className={`flex justify-center md:justify-end items-center gap-5 mt-10`}>
           <button
-          onClick={()=>setAddPopup(false)}
-            className={`transition-all duration-150 hover:scale-90 border-2 px-5 w-32 py-1 text-base-100 rounded-full border-error bg-error shadow-md shadow-error`}>
+            className={`transition-all duration-150 hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-base-100 bg-primary shadow-md`}>
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className={`transition-all duration-150 text-white hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-primary bg-primary shadow-md shadow-primary`}>
-            {isLoading ? (
-              <span className="loading loading-spinner loading-md"></span>
-            ) : (
-              'Create'
-            )}
+            className={`transition-all duration-150 text-white hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-secondary bg-secondary shadow-md shadow-secondary`}>
+            Create
           </button>
         </div>
       </div>

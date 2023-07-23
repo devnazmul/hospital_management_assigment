@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
           localStorage.removeItem('token');
           localStorage.removeItem('userData');
           setIsAuthenticated(false);
+          console.log(error)
           toast.custom((t) => (
             <CustomToaster
               t={t}

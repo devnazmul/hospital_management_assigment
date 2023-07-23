@@ -24,6 +24,7 @@ export default
           customLight: {
             "primary": "#2784ff",
             "secondary": "#ff5500",
+            "offwhite":"#f6f7fc",
             "accent": "#10b981",
             "neutral": "#374151",
             "base-100": "#ffffff",
@@ -38,9 +39,10 @@ export default
           customDark: {
             "primary": "#0575b4",
             "secondary": "#db2780",
+            "offwhite":"#f6f7fc",
             "accent": "#10b981",
             "neutral": "#374151",
-            "base-100": "#1f2937",
+            "base-100": "#000000",
             "info": "#38bdf8",
             "success": "#34d399",
             "warning": "#fde047",

@@ -53,10 +53,10 @@ export default function Login() {
 
   // HANDLE FORM SUBMISSION
   const handleSubmit = (e) => {
-    setIsLoading(true);
     e.preventDefault();
 
     if (validateForm()) {
+    setIsLoading(true);
     // Form is valid, submit the data
     // You can perform your submit logic here
     login(formData)
@@ -66,7 +66,7 @@ export default function Login() {
         setIsAuthenticated(true);
         setTimeout(() => {
           setIsLoading(false);
-          navigate('/');
+          // navigate('/');
         }, 2000);
       })
       .catch((error) => {
@@ -103,13 +103,13 @@ export default function Login() {
         alt=""
       />
       <div className="w-full h-full flex justify-between items-center p-5">
-        <div className='z-10 text-base-100 pl-10 pr-20 text-xl glass h-[500px] w-[700px] rounded-xl flex flex-col justify-center'>
+        <div className='z-10 text-base-100 hidden lg:flex pl-10 pr-20 text-xl glass h-[500px] w-[700px] rounded-xl  flex-col justify-center'>
           <h1 className='text-6xl text-base-100 font-bold mb-10'>Your Trusted Hospital</h1>
           <p>Our Hospital is one of the best Hospital in this city.</p>
           <p>To get our best service please login to our system.</p>
           <p>You can request for appoinment with a doctor from your home.</p>
         </div>
-        <div className="card h-[500px] w-full md:w-1/3 glass">
+        <div className="card h-[500px] w-full lg:w-1/3 glass">
           <div className="card-body">
             <h2 className="font-semibold text-4xl text-center text-white">
               Login

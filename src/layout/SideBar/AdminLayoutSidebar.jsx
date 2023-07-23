@@ -2,62 +2,64 @@
 // #00106
 // ===========================================
 
-import { AiOutlineDashboard } from 'react-icons/ai';
+import {
+  AiOutlineInfoCircle,
+  AiOutlineSetting
+} from 'react-icons/ai';
+import { FaUserDoctor } from 'react-icons/fa6';
+import { LuCalendarHeart, LuHelpingHand } from 'react-icons/lu';
+import { RxDashboard } from 'react-icons/rx';
 import { NavLink } from 'react-router-dom';
 
 const AssistantSidebarLinks = [
   {
     route: '/',
-    Icon: AiOutlineDashboard,
+    Icon: RxDashboard,
     title: 'Dashboard',
   },
   {
     route: '/appointment',
-    Icon: AiOutlineDashboard,
+    Icon: LuCalendarHeart,
     title: 'Appointments',
   },
   {
-    route: '/user/doctor',
-    Icon: AiOutlineDashboard,
+    route: '/doctor',
+    Icon: FaUserDoctor,
     title: 'Doctors',
   },
   {
-    route: '/user/patient',
-    Icon: AiOutlineDashboard,
+    route: '/user',
+    Icon: LuHelpingHand,
     title: 'Patients',
   },
 ];
 
-
 const DoctorSidebarLinks = [
   {
     route: '/',
-    Icon: AiOutlineDashboard,
+    Icon: LuCalendarHeart,
     title: 'Appointments',
   },
-  
 ];
-
 
 const PatientSidebarLinks = [
   {
     route: '/',
-    Icon: AiOutlineDashboard,
+    Icon: LuCalendarHeart,
     title: 'Appointments',
   },
-  
 ];
 
 export default function AdminLayoutSidebar() {
   const user = JSON.parse(localStorage.getItem('userData'));
   return (
     <div
-      className={`h-full bg-primary w-full text-base-100 flex flex-col px-1 py-5 `}>
+      className={`z-20 h-full bg-primary group w-20 rounded-lg text-base-100 flex flex-col justify-between px-1 py-5`}>
       <div className={`logo w-full flex justify-center items-center`}>
-        <h1 className='text-xl font-bold mb-10'>Khan Hospital</h1>
+        <img className='w-10 h-10' src="/assets/responsive-logo.png" alt=""  />
       </div>
       <div
-        className={`navmenu flex flex-col gap-5 mt-2 items-center md:items-start md:px-5 overflow-y-auto scrollbar`}>
+        className={`navmenu flex flex-col gap-5 mt-2 items-center md:items-start px-4 overflow-y-auto scrollbar`}>
         {/* ASSISTANT SIDE BAR  */}
         {user?.role === 'assistant' &&
           AssistantSidebarLinks.map((lnk, i) => {
@@ -69,14 +71,14 @@ export default function AdminLayoutSidebar() {
                 to={route}
                 className={({ isActive }) =>
                   isActive
-                    ? `py-2 w-full activeNavLink flex justify-center md:justify-start items-center gap-5 text-base-100 font-semibold border-b-2 border-secondary hover:translate-x-3  transition-all duration-150`
-                    : `py-2 w-full hover:translate-x-3 transition-all duration-150 flex justify-center md:justify-start items-center gap-5`
+                    ? `h-10 w-10 bg-blue-300 flex justify-center items-center rounded-xl`: 
+                    `h-10 w-10 hover:bg-blue-800 flex justify-center items-center rounded-xl`
                 }>
-                <span className={`inline-block w-[20px]`}>
-                  <Icon className={`icon text-2xl`} />
+                <span className={``}>
+                  <Icon className={`icon text-2xl text-base-100`} />
                 </span>
                 <span
-                  className={`text-sm  hidden md:block group-hover:border-t-2 border-secondary`}>
+                  className={`text-sm  hidden hover:block `}>
                   {title}
                 </span>
               </NavLink>
@@ -89,22 +91,22 @@ export default function AdminLayoutSidebar() {
             const { title, route, Icon } = lnk;
             return (
               <NavLink
-                title={title}
-                key={i}
-                to={route}
-                className={({ isActive }) =>
-                  isActive
-                    ? `py-2 w-full activeNavLink flex justify-center md:justify-start items-center gap-5 text-base-100 font-semibold border-b-2 border-secondary hover:translate-x-3  transition-all duration-150`
-                    : `py-2 w-full hover:translate-x-3 transition-all duration-150 flex justify-center md:justify-start items-center gap-5`
-                }>
-                <span className={`inline-block w-[20px]`}>
-                  <Icon className={`icon text-2xl`} />
-                </span>
-                <span
-                  className={`text-sm  hidden md:block group-hover:border-t-2 border-secondary`}>
-                  {title}
-                </span>
-              </NavLink>
+              title={title}
+              key={i}
+              to={route}
+              className={({ isActive }) =>
+                isActive
+                  ? `h-10 w-10 bg-blue-300 flex justify-center items-center rounded-xl`: 
+                  `h-10 w-10 hover:bg-blue-800 flex justify-center items-center rounded-xl`
+              }>
+              <span className={``}>
+                <Icon className={`icon text-2xl text-base-100`} />
+              </span>
+              <span
+                className={`text-sm  hidden hover:block `}>
+                {title}
+              </span>
+            </NavLink>
             );
           })}
 
@@ -114,24 +116,34 @@ export default function AdminLayoutSidebar() {
             const { title, route, Icon } = lnk;
             return (
               <NavLink
-                title={title}
-                key={i}
-                to={route}
-                className={({ isActive }) =>
-                  isActive
-                    ? `py-2 w-full activeNavLink flex justify-center md:justify-start items-center gap-5 text-base-100 font-semibold border-b-2 border-secondary hover:translate-x-3  transition-all duration-150`
-                    : `py-2 w-full hover:translate-x-3 transition-all duration-150 flex justify-center md:justify-start items-center gap-5`
-                }>
-                <span className={`inline-block w-[20px]`}>
-                  <Icon className={`icon text-2xl`} />
-                </span>
-                <span
-                  className={`text-sm  hidden md:block group-hover:border-t-2 border-secondary`}>
-                  {title}
-                </span>
-              </NavLink>
+              title={title}
+              key={i}
+              to={route}
+              className={({ isActive }) =>
+                isActive
+                  ? `h-10 w-10 bg-blue-300 flex justify-center items-center rounded-xl`: 
+                  `h-10 w-10 hover:bg-blue-800 flex justify-center items-center rounded-xl`
+              }>
+              <span className={``}>
+                <Icon className={`icon text-2xl text-base-100`} />
+              </span>
+              <span
+                className={`text-sm  hidden hover:block `}>
+                {title}
+              </span>
+            </NavLink>
             );
           })}
+      </div>
+
+      <div
+        className={`navmenu flex flex-col gap-5 mt-2 items-center md:items-start md:px-5 overflow-y-auto scrollbar`}>
+        <div className='flex items-center gap-5'>
+          <AiOutlineSetting className="text-2xl text-base-100" />
+        </div>
+        <div className='flex items-center gap-5'>
+          <AiOutlineInfoCircle className="text-2xl text-base-100" />
+        </div>
       </div>
     </div>
   );

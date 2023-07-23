@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Aguafina+Script&family=Alegreya:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Gruppo&family=Lexend+Mega:wght@100;200;300;400;500;600;700;800;900&family=Lexend+Tera:wght@100;200;300;400;500;600;700;800;900&family=Mitr:wght@200;300;400;500;600;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@100;300;400;500;700;900&family=Romanesco&family=Russo+One&family=Sulphur+Point:wght@300;400;700&family=Syncopate:wght@400;700&display=swap');
+
 /* CUSTOM CSS  */
 html {
   scroll-behavior: smooth;
@@ -55,7 +57,7 @@ html {
 }
 
 .activeNavLink span .icon {
-  color: #db2780;
+  transform: scale(1.2);
 }
 
 /* CUSTOM POPUP  */
@@ -65,13 +67,28 @@ html {
   overflow-y: auto;
   box-shadow: 1px 1px 5px #333;
   width: 500px;
-  height: 400px;
+  height: 500px;
   border-radius: 20px;
   position: relative;
+  background-color: #fff;
+}
+.addAppointmentPatient-content {
+  overflow: hidden;
+  border: 3px solid #fff;
+  overflow-y: auto;
+  box-shadow: 1px 1px 5px #333;
+  width: 500px;
+  height: 300px;
+  border-radius: 20px;
+  position: relative;
+  background-color: #fff;
 }
 
 @media (max-width: 700px) {
   .addCustomerPopup-content {
+    width: 90%;
+  }
+  .addAppointmentPatient-content {
     width: 90%;
   }
 }

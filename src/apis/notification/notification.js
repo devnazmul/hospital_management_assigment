@@ -6,7 +6,7 @@
 import axios from 'axios';
 
 // GET APIS =====================================================
-export const getAllAppointments = async () => {
+export const getAllsNotification = async (id) => {
   const jwt = localStorage.getItem('token')
   const config = {
     headers: {
@@ -15,8 +15,9 @@ export const getAllAppointments = async () => {
       "Authorization": `Bearer ${jwt}`
     },
   };
-  return await axios.get(`/api/v1/appointment/get-all`, config)
+  return await axios.get(`/api/v1/notification/get-all`, config)
     .then(res => {
+        console.log(id,res?.data)
       return res?.data;
     })
     .catch(err => {
@@ -26,7 +27,7 @@ export const getAllAppointments = async () => {
 
 
 // POST APIS =====================================================
-export const createAppointment = async (data) => {
+export const createNotification = async (data) => {
   const jwt = localStorage.getItem('token')
   const config = {
     headers: {
@@ -35,8 +36,8 @@ export const createAppointment = async (data) => {
       "Authorization": `Bearer ${jwt}`
     },
   };
-
-  return await axios.post(`/api/v1/appointment/create`, data, config)
+  
+  return await axios.post(`/api/v1/notification/create`, data, config)
     .then(res => {
       return res?.data;
     })
@@ -44,9 +45,7 @@ export const createAppointment = async (data) => {
       throw err
     })
 }
-
-// PATCH APIS =====================================================
-export const approveAppointment = async (id) => {
+export const markAsReadNotification = async (id) => {
   const jwt = localStorage.getItem('token')
   const config = {
     headers: {
@@ -55,8 +54,8 @@ export const approveAppointment = async (id) => {
       "Authorization": `Bearer ${jwt}`
     },
   };
-
-  return await axios.patch(`/api/v1/appointment/approve/${id}`,{}, config)
+  
+  return await axios.patch(`/api/v1/notification/update/${id}`, {}, config)
     .then(res => {
       return res?.data;
     })
@@ -64,7 +63,7 @@ export const approveAppointment = async (id) => {
       throw err
     })
 }
-export const updateAppointment = async (id,data) => {
+export const deleteNotification = async (id) => {
   const jwt = localStorage.getItem('token')
   const config = {
     headers: {
@@ -73,47 +72,8 @@ export const updateAppointment = async (id,data) => {
       "Authorization": `Bearer ${jwt}`
     },
   };
-
-  return await axios.patch(`/api/v1/appointment/update/${id}`,data, config)
-    .then(res => {
-      return res?.data;
-    })
-    .catch(err => {
-      throw err
-    })
-}
-export const rejectAppointment = async (id) => {
-  const jwt = localStorage.getItem('token')
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      'Accept': 'application/json',
-      "Authorization": `Bearer ${jwt}`
-    },
-  };
-
-  return await axios.patch(`/api/v1/appointment/reject/${id}`,{}, config)
-    .then(res => {
-      return res?.data;
-    })
-    .catch(err => {
-      throw err
-    })
-}
-
-
-// DELETE API ================================================ 
-export const deleteAppointment = async (id) => {
-  const jwt = localStorage.getItem('token')
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      'Accept': 'application/json',
-      "Authorization": `Bearer ${jwt}`
-    },
-  };
-
-  return await axios.delete(`/api/v1/appointment/delete/${id}`, config)
+  
+  return await axios.delete(`/api/v1/notification/delete/${id}`, config)
     .then(res => {
       return res?.data;
     })
