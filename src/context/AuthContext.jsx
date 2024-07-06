@@ -2,10 +2,10 @@
 // #00128
 // ===========================================
 
-import React, { createContext, useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { getUserByToken } from '../apis/auth/auth';
-import CustomToaster from '../components/CustomToaster';
+import React, { createContext, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { getUserByToken } from "../apis/auth/auth";
+import CustomToaster from "../components/CustomToaster";
 
 // Create the authentication context
 export const AuthContext = createContext();
@@ -16,44 +16,41 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRouteChange, setIsRouteChange] = useState(Math.random());
   const setLogout = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userData');
+      localStorage.removeItem("token");
+      localStorage.removeItem("userData");
       setIsAuthenticated(false);
     }
   };
 
   useEffect(() => {
-    // setInterval(() => {
-    const token = localStorage.getItem('token');
-    if (isAuthenticated || token) {
-      getUserByToken()
-        .then((res) => {
-          localStorage.setItem('userData', JSON.stringify(res?.data));
-          localStorage.setItem('token', res?.token);
-          setIsAuthenticated(true);
-        })
-        .catch((error) => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('userData');
-          setIsAuthenticated(false);
-          console.log(error)
-          toast.custom((t) => (
-            <CustomToaster
-              t={t}
-              type={'error'}
-              text={`ID: 00128 - ${error?.response?.data?.message}`}
-            />
-          ));
-        });
-    } else {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userData');
-      setIsAuthenticated(false);
-    }
-    // }, 10000);
-  }, [isAuthenticated, isRouteChange]);
+    setInterval(() => {
+      const token = localStorage.getItem("token");
+      if (isAuthenticated || token) {
+        getUserByToken()
+          .then((res) => {
+            localStorage.setItem("userData", JSON.stringify(res?.data));
+            localStorage.setItem("token", res?.token);
+            setIsAuthenticated(true);
+          })
+          .catch((error) => {
+            console.log("hit logout");
+            setLogout();
+            toast.custom((t) => (
+              <CustomToaster
+                t={t}
+                type={"error"}
+                text={`ID: 00128 - ${error?.response?.data?.message}`}
+              />
+            ));
+          });
+      } else {
+        console.log("hit logout");
+        setLogout();
+      }
+    }, 10000);
+  }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider
@@ -62,7 +59,8 @@ export const AuthProvider = ({ children }) => {
         setLogout,
         setIsAuthenticated,
         setIsRouteChange,
-      }}>
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

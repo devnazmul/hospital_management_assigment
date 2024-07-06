@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import Swal from "sweetalert2";
 import {
   approveAppointment,
   updateAppointment,
-} from '../apis/appointment/appointment';
-import { createNotification } from '../apis/notification/notification';
-import { getAllschedules } from '../apis/schedule/schedule';
-import CustomToaster from './CustomToaster';
+} from "../apis/appointment/appointment";
+import { createNotification } from "../apis/notification/notification";
+import { getAllschedules } from "../apis/schedule/schedule";
+import CustomToaster from "./CustomToaster";
 
 export default function CreateAppointmentSchedule({
   setIsUpdated,
@@ -21,16 +21,16 @@ export default function CreateAppointmentSchedule({
   const [doctorSchedules, setDoctorSchedules] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formDataForAssistant, setFormDataForAssistant] = useState({
-    schedule_date: '',
-    start_time: '',
-    end_time: '',
+    schedule_date: "",
+    start_time: "",
+    end_time: "",
   });
 
   const onChangeFormData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
 
-    if (name === 'schedule_date') {
+    if (name === "schedule_date") {
       setFormDataForAssistant((prevFormData) => ({
         ...prevFormData,
         [name]: value,
@@ -50,7 +50,7 @@ export default function CreateAppointmentSchedule({
   const [dataLoading, setDataLoading] = useState(true);
   // GET SCHEDULE FREE SLOTS
   useEffect(() => {
-    if (setscheduleSelecteDoctor !== '') {
+    if (setscheduleSelecteDoctor !== "") {
       setDataLoading(true);
       getAllschedules(setscheduleSelecteDoctor)
         .then((res) => {
@@ -73,23 +73,23 @@ export default function CreateAppointmentSchedule({
     // VALIDATE SCHEDULE
     if (
       !formDataForAssistant.schedule_date ||
-      formDataForAssistant.schedule_date.trim() === ''
+      formDataForAssistant.schedule_date.trim() === ""
     ) {
-      newErrors.schedule_date = 'Schedule date is required';
+      newErrors.schedule_date = "Schedule date is required";
     }
     // VALIDATE STARTINF TIME
     if (
       !formDataForAssistant.start_time ||
-      formDataForAssistant.start_time.trim() === ''
+      formDataForAssistant.start_time.trim() === ""
     ) {
-      newErrors.start_time = 'Starting time is required';
+      newErrors.start_time = "Starting time is required";
     }
     // VALIDATE END TIME
     if (
       !formDataForAssistant.end_time ||
-      formDataForAssistant.end_time.trim() === ''
+      formDataForAssistant.end_time.trim() === ""
     ) {
-      newErrors.end_time = 'End time is required';
+      newErrors.end_time = "End time is required";
     }
 
     setErrors(newErrors);
@@ -109,25 +109,25 @@ export default function CreateAppointmentSchedule({
                   setIsUpdated(Math.random());
                   createNotification({
                     reciver_id: setscheduleSelecteDoctor,
-                    title: 'New Appointment!',
+                    title: "New Appointment!",
                     message:
-                      'A new appointment is approved by the assistant please check on the appointment page',
+                      "A new appointment is approved by the assistant please check on the appointment page",
                   })
                     .then((res) => {
                       createNotification({
                         reciver_id: setscheduleSelectePatient,
-                        title: 'Your appointment is approved',
+                        title: "Your appointment is approved",
                         message:
-                          'Your appointment is approved by the assistant please check on the appointment page',
+                          "Your appointment is approved by the assistant please check on the appointment page",
                       })
                         .then((res) => {
                           setAddPopup(false);
                           setIsUpdated(Math.random());
                           setIsLoading(false);
                           Swal.fire(
-                            'Approved!',
+                            "Approved!",
                             `The appointment has been approved.`,
-                            'success'
+                            "success"
                           );
                         })
                         .catch((error) => {
@@ -136,7 +136,7 @@ export default function CreateAppointmentSchedule({
                           toast.custom((t) => (
                             <CustomToaster
                               t={t}
-                              type={'error'}
+                              type={"error"}
                               text={`ID: #00108 - ${error?.response?.data?.message}`}
                             />
                           ));
@@ -148,7 +148,7 @@ export default function CreateAppointmentSchedule({
                       toast.custom((t) => (
                         <CustomToaster
                           t={t}
-                          type={'error'}
+                          type={"error"}
                           text={`ID: #00108 - ${error?.response?.data?.message}`}
                         />
                       ));
@@ -160,8 +160,8 @@ export default function CreateAppointmentSchedule({
 
                 if (error) {
                   Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
+                    icon: "error",
+                    title: "Oops...",
                     text: `Something went wrong!`,
                   });
                 }
@@ -175,7 +175,7 @@ export default function CreateAppointmentSchedule({
           toast.custom((t) => (
             <CustomToaster
               t={t}
-              type={'error'}
+              type={"error"}
               text={`ID: #00108 - ${error?.response?.data?.message}`}
             />
           ));
@@ -209,8 +209,9 @@ export default function CreateAppointmentSchedule({
                 type="text"
                 name="schedule_date"
                 id="schedule_date"
-                defaultValue={formDataForAssistant?.schedule_date}>
-                <option value={''}>Select Schedule</option>
+                defaultValue={formDataForAssistant?.schedule_date}
+              >
+                <option value={""}>Select Schedule</option>
                 {doctorSchedules.map((sche, i) => (
                   <option key={i} value={sche?.date}>
                     {sche?.date}
@@ -230,14 +231,14 @@ export default function CreateAppointmentSchedule({
                   <div className="flex flex-col">
                     <span>
                       <span className="text-primary font-semibold">
-                        Statrting time:
-                      </span>{' '}
+                        Starting time:
+                      </span>{" "}
                       {formDataForAssistant?.start_time}
                     </span>
                     <span>
                       <span className="text-error font-semibold">
                         End time:
-                      </span>{' '}
+                      </span>{" "}
                       {formDataForAssistant?.end_time}
                     </span>
                   </div>
@@ -252,16 +253,18 @@ export default function CreateAppointmentSchedule({
         <div className={`flex justify-center items-center mt-10 gap-5`}>
           <button
             onClick={() => setAddPopup(false)}
-            className={`transition-all duration-150 hover:scale-90 border-2 px-5 w-32 py-1 text-base-100 rounded-full border-error bg-error shadow-md shadow-error`}>
+            className={`transition-all duration-150 hover:scale-90 border-2 px-5 w-32 py-1 text-base-100 rounded-full border-error bg-error shadow-md shadow-error`}
+          >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className={`transition-all duration-150 text-white hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-primary bg-primary shadow-md shadow-primary`}>
+            className={`transition-all duration-150 text-white hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-primary bg-primary shadow-md shadow-primary`}
+          >
             {isLoading ? (
               <span className="loading loading-spinner loading-md"></span>
             ) : (
-              'Create'
+              "Create"
             )}
           </button>
         </div>

@@ -2,29 +2,30 @@
 // #00108
 // ===========================================
 
-import moment from 'moment/moment';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { MdOutlineCancel } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
-import Popup from 'reactjs-popup';
-import Swal from 'sweetalert2';
+import moment from "moment/moment";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { MdOutlineCancel } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import Popup from "reactjs-popup";
+import Swal from "sweetalert2";
 import {
   getAllAppointments,
   rejectAppointment,
-} from '../../apis/appointment/appointment';
-import { createNotification } from '../../apis/notification/notification';
-import CreateAppointment from '../../components/CreateAppointment';
-import CreateAppointmentPatient from '../../components/CreateAppointmentPatient';
-import CreateAppointmentSchedule from '../../components/CreateAppointmentSchedule';
-import CustomToaster from '../../components/CustomToaster';
-import Table from '../../components/Table';
-import Navbar from '../../layout/Navbar/Navbar';
+} from "../../apis/appointment/appointment";
+import { createNotification } from "../../apis/notification/notification";
+import CreateAppointment from "../../components/CreateAppointment";
+import CreateAppointmentPatient from "../../components/CreateAppointmentPatient";
+import CreateAppointmentSchedule from "../../components/CreateAppointmentSchedule";
+import CustomToaster from "../../components/CustomToaster";
+import Table from "../../components/Table";
+import Navbar from "../../layout/Navbar/Navbar";
+import { convertTo12HourFormat } from "../../utils/convertTo12HourFormat";
 
-export default function Appointment() {
-  const [selectedId, setSelectedId] = useState('');
+export default function Appointment({ isNeedNav = true }) {
+  const [selectedId, setSelectedId] = useState("");
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('userData'));
+  const user = JSON.parse(localStorage.getItem("userData"));
   const [appointments, setAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -43,21 +44,20 @@ export default function Appointment() {
           res?.data.reverse().map((appointment) => ({
             id: appointment?._id,
             patient_id: appointment?.patient_id,
-            patient_id: appointment?.patient_id,
             patient: appointment?.patient_name,
             doctor_id: appointment?.doctor_id,
             doctor: appointment?.doctor_name,
             rawStatus: appointment?.status,
             status:
-              appointment?.status === 'pending' ? (
+              appointment?.status === "pending" ? (
                 <span className="px-3 font-semibold py-2 rounded-md text-gray-600 bg-gray-300">
                   {appointment?.status}
                 </span>
-              ) : appointment?.status === 'approved' ? (
+              ) : appointment?.status === "approved" ? (
                 <span className="px-3 font-semibold py-2 rounded-md text-green-600 bg-green-300">
                   {appointment?.status}
                 </span>
-              ) : appointment?.status === 'rejected' ? (
+              ) : appointment?.status === "rejected" ? (
                 <span className="px-3 font-semibold py-2 rounded-md text-red-600 bg-red-300">
                   {appointment?.status}
                 </span>
@@ -67,10 +67,12 @@ export default function Appointment() {
                 </span>
               ),
             schedule: appointment?.schedule_date
-              ? `${moment(appointment?.schedule_date).format('LL')} (${
+              ? `${moment(appointment?.schedule_date, "DD-MM-YYYY").format(
+                  "LL"
+                )} (${convertTo12HourFormat(
                   appointment?.start_time
-                } - ${appointment?.end_time})`
-              : 'Not Set Yet!',
+                )} - ${convertTo12HourFormat(appointment?.end_time)})`
+              : "Not Set Yet!",
           }))
         );
         setTotalData(res?.total);
@@ -82,27 +84,27 @@ export default function Appointment() {
         toast.custom((t) => (
           <CustomToaster
             t={t}
-            type={'error'}
+            type={"error"}
             text={`ID: #00108 - ${error?.response?.data?.message}`}
           />
         ));
       });
   }, [isUpdated]);
 
-  const [setscheduleSelecteDoctor, setSetscheduleSelecteDoctor] = useState('');
+  const [setscheduleSelecteDoctor, setSetscheduleSelecteDoctor] = useState("");
   const [setscheduleSelectePatient, setSetscheduleSelectePatient] =
-    useState('');
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState('');
+    useState("");
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState("");
   // // HANDLE DEAPPROVELETE
   const handleApprove = (id, patient_id, doctor_id) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, approve it!',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, approve it!",
     }).then((result) => {
       if (result.isConfirmed) {
         setSelectedAppointmentId(id);
@@ -115,13 +117,13 @@ export default function Appointment() {
   // // HANDLE REJECT
   const handleReject = (id, patient_id) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, reject it!',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, reject it!",
     }).then((result) => {
       if (result.isConfirmed) {
         rejectAppointment(id)
@@ -129,17 +131,17 @@ export default function Appointment() {
             if (res) {
               createNotification({
                 reciver_id: patient_id,
-                title: 'Your appointment is rejected!',
+                title: "Your appointment is rejected!",
                 message:
-                  'Your appointment is rejected by the assistant please check on the appointment page',
+                  "Your appointment is rejected by the assistant please check on the appointment page",
               })
                 .then((res) => {
                   setIsUpdated(false);
                   setIsUpdated(Math.random());
                   Swal.fire(
-                    'Rejected!',
-                    'The appointment has been rejected.',
-                    'success'
+                    "Rejected!",
+                    "The appointment has been rejected.",
+                    "success"
                   );
                 })
                 .catch((error) => {
@@ -148,7 +150,7 @@ export default function Appointment() {
                   toast.custom((t) => (
                     <CustomToaster
                       t={t}
-                      type={'error'}
+                      type={"error"}
                       text={`ID: #00108 - ${error?.response?.data?.message}`}
                     />
                   ));
@@ -158,9 +160,9 @@ export default function Appointment() {
           .catch((error) => {
             if (error) {
               Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong!',
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
               });
             }
           });
@@ -174,33 +176,39 @@ export default function Appointment() {
 
   return (
     <>
-      <nav className={``}>
-        <Navbar title={'Appointments'} />
-      </nav>
+      {isNeedNav ? (
+        <nav className={``}>
+          <Navbar title={"Appointments"} />
+        </nav>
+      ) : (
+        ""
+      )}
       <div className="w-full h-[85vh] md:h-[75vh] overflow-y-auto scrollbar pr-3 px-10">
         {/* ADD  */}
         <Popup
-          className={`${user?.role === 'assistant' && 'addCustomerPopup'} ${
-            user?.role === 'patient' && 'addAppointmentPatient'
+          className={`${user?.role === "assistant" && "addCustomerPopup"} ${
+            user?.role === "patient" && "addAppointmentPatient"
           }`}
           open={addPopup}
           onClose={closeModal}
-          position="right center">
+          position="right center"
+        >
           <div className="w-full bg-base-100 h-full py-5 px-5 relative">
             <button
               onClick={() => {
                 setAddPopup(false);
               }}
-              className="absolute top-1 right-1">
+              className="absolute top-1 right-1"
+            >
               <MdOutlineCancel className="text-error text-2xl" />
             </button>
-            {user?.role === 'assistant' && (
+            {user?.role === "assistant" && (
               <CreateAppointment
                 setIsUpdated={setIsUpdated}
                 setAddPopup={setAddPopup}
               />
             )}
-            {user?.role === 'patient' && (
+            {user?.role === "patient" && (
               <CreateAppointmentPatient
                 setIsUpdated={setIsUpdated}
                 setAddPopup={setAddPopup}
@@ -211,18 +219,20 @@ export default function Appointment() {
 
         {/* SELECT SCHEDULE  */}
         <Popup
-          className={'addAppointmentPatient'}
+          className={"addAppointmentPatient"}
           open={schedulePopup}
           onClose={() => {
             setSchedulePopup(false);
           }}
-          position="right center">
+          position="right center"
+        >
           <div className="w-full bg-base-100 h-full py-5 px-5 relative">
             <button
               onClick={() => {
                 setSchedulePopup(false);
               }}
-              className="absolute top-1 right-1">
+              className="absolute top-1 right-1"
+            >
               <MdOutlineCancel className="text-error text-2xl" />
             </button>
 
@@ -236,11 +246,13 @@ export default function Appointment() {
           </div>
         </Popup>
 
-        <div className="flex justify-end items-center my-5">
-          {user?.role !== 'doctor' && (
+        <div className="flex justify-between items-center my-5">
+          <h1 className={`text-2xl font-semibold`}>All Appointments</h1>
+          {user?.role !== "doctor" && (
             <button
               onClick={() => setAddPopup(true)}
-              className="btn btn-primary text-base-100 rounded-full w-32">
+              className="btn btn-primary text-base-100 rounded-full w-32"
+            >
               + Add New
             </button>
           )}
@@ -249,10 +261,10 @@ export default function Appointment() {
         <div>
           <Table
             rows={appointments}
-            cols={['status', 'patient', 'doctor', 'schedule']}
+            cols={["status", "patient", "doctor", "schedule"]}
             isLoading={isLoading}
-            acceptBtn={user.role === 'assistant'}
-            rejectBtn={user.role === 'assistant'}
+            acceptBtn={user?.role === "assistant"}
+            rejectBtn={user?.role === "assistant"}
             handleAccept={handleApprove}
             handleReject={handleReject}
           />

@@ -2,20 +2,20 @@
 // #00126
 // ===========================================
 
-import React, { useContext, useEffect, useState } from 'react';
-import { Toaster, toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../../apis/auth/auth';
-import CustomToaster from '../../components/CustomToaster';
-import { AuthContext } from '../../context/AuthContext';
+import React, { useContext, useEffect, useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../apis/auth/auth";
+import CustomToaster from "../../components/CustomToaster";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { setIsAuthenticated, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -35,14 +35,14 @@ export default function Login() {
     const newErrors = {};
 
     // Validate email
-    if (!formData.email || formData.email.trim() === '') {
-      newErrors.email = 'Email is required';
+    if (!formData.email || formData.email.trim() === "") {
+      newErrors.email = "Email is required";
     } else if (
       !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(
         formData.email.trim()
       )
     ) {
-      newErrors.email = 'Invalid email';
+      newErrors.email = "Invalid email";
     }
 
     setErrors(newErrors);
@@ -53,44 +53,42 @@ export default function Login() {
 
   // HANDLE FORM SUBMISSION
   const handleSubmit = (e) => {
-    e.preventDefault();
-
     if (validateForm()) {
-    setIsLoading(true);
-    // Form is valid, submit the data
-    // You can perform your submit logic here
-    login(formData)
-      .then((res) => {
-        localStorage.setItem('userData', JSON.stringify(res?.data));
-        localStorage.setItem('token', res?.token);
-        setIsAuthenticated(true);
-        setTimeout(() => {
+      setIsLoading(true);
+      // Form is valid, submit the data
+      // You can perform your submit logic here
+      login(formData)
+        .then((res) => {
+          localStorage.setItem("userData", JSON.stringify(res?.data));
+          localStorage.setItem("token", res?.token);
+          setIsAuthenticated(true);
+          setTimeout(() => {
+            setIsLoading(false);
+            navigate("/");
+          }, 2000);
+        })
+        .catch((error) => {
           setIsLoading(false);
-          // navigate('/');
-        }, 2000);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        toast.custom((t) => (
-          <CustomToaster
-            t={t}
-            type={'error'}
-            text={`ID: #00126 - ${error?.response?.data?.message}`}
-          />
-        ));
-      });
-    console.log('Form submitted:', formData);
+          toast.custom((t) => (
+            <CustomToaster
+              t={t}
+              type={"error"}
+              text={`ID: #00126 - ${error?.response?.data?.message}`}
+            />
+          ));
+        });
+      console.log("Form submitted:", formData);
     } else {
-    // Form is invalid, do something (e.g., display error messages)
-    console.log('Form validation failed');
+      // Form is invalid, do something (e.g., display error messages)
+      console.log("Form validation failed");
     }
   };
 
   // const history = useHistory();
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem("token")) {
       setIsAuthenticated(true);
-      window.location.href='/'
+      window.location.href = "/";
     }
   }, [isAuthenticated]);
   return (
@@ -99,12 +97,14 @@ export default function Login() {
 
       <img
         className="w-full h-full object-cover absolute"
-        src={'/assets/login.jpg'}
+        src={"/assets/login.jpg"}
         alt=""
       />
       <div className="w-full h-full flex justify-between items-center p-5">
-        <div className='z-10 text-base-100 hidden lg:flex pl-10 pr-20 text-xl glass h-[500px] w-[700px] rounded-xl  flex-col justify-center'>
-          <h1 className='text-6xl text-base-100 font-bold mb-10'>Your Trusted Hospital</h1>
+        <div className="z-10 text-base-100 hidden lg:flex pl-10 pr-20 text-xl glass h-[500px] w-[700px] rounded-xl  flex-col justify-center">
+          <h1 className="text-6xl text-base-100 font-bold mb-10">
+            Your Trusted Hospital
+          </h1>
           <p>Our Hospital is one of the best Hospital in this city.</p>
           <p>To get our best service please login to our system.</p>
           <p>You can request for appoinment with a doctor from your home.</p>
@@ -121,7 +121,8 @@ export default function Login() {
               <div className="my-3 flex flex-col w-full relative">
                 <label
                   htmlFor="Email"
-                  className="text-white text-lg font-medium">
+                  className="text-white text-lg font-medium"
+                >
                   Email
                 </label>
                 <input
@@ -144,7 +145,8 @@ export default function Login() {
               <div className="my-3 flex flex-col w-full relative">
                 <label
                   htmlFor="Password"
-                  className="text-white text-lg font-medium">
+                  className="text-white text-lg font-medium"
+                >
                   Password
                 </label>
                 <input
@@ -163,18 +165,17 @@ export default function Login() {
                   </span>
                 )}
               </div>
-
-              
             </div>
             <div className="card-actions justify-end">
               <button
                 disabled={isLoading}
-                onClick={handleSubmit}
-                className="btn btn-base-100 w-full text-primary">
+                onClick={() => handleSubmit()}
+                className="btn btn-base-100 w-full text-primary"
+              >
                 {isLoading ? (
                   <span className="loading loading-spinner text-primary loading-md"></span>
                 ) : (
-                  'Login'
+                  "Login"
                 )}
               </button>
             </div>
