@@ -39,7 +39,6 @@ export default function Appointment({ isNeedNav = true }) {
     setIsLoading(true);
     getAllAppointments()
       .then((res) => {
-        console.log(res);
         setAppointments(
           res?.data.reverse().map((appointment) => ({
             id: appointment?._id,
@@ -95,6 +94,7 @@ export default function Appointment({ isNeedNav = true }) {
   const [setscheduleSelectePatient, setSetscheduleSelectePatient] =
     useState("");
   const [selectedAppointmentId, setSelectedAppointmentId] = useState("");
+  const [selectedAppointment, setSelectedAppointment] = useState({});
   // // HANDLE DEAPPROVELETE
   const handleApprove = (id, patient_id, doctor_id) => {
     Swal.fire({
@@ -107,6 +107,9 @@ export default function Appointment({ isNeedNav = true }) {
       confirmButtonText: "Yes, approve it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        setSelectedAppointment(
+          appointments?.find((single) => single.id === id)
+        );
         setSelectedAppointmentId(id);
         setSetscheduleSelectePatient(patient_id);
         setSetscheduleSelecteDoctor(doctor_id);
@@ -242,6 +245,7 @@ export default function Appointment({ isNeedNav = true }) {
               setAddPopup={setSchedulePopup}
               setscheduleSelectePatient={setscheduleSelectePatient}
               selectedAppointmentId={selectedAppointmentId}
+              selectedAppointment={selectedAppointment}
             />
           </div>
         </Popup>
@@ -263,8 +267,8 @@ export default function Appointment({ isNeedNav = true }) {
             rows={appointments}
             cols={["status", "patient", "doctor", "schedule"]}
             isLoading={isLoading}
-            acceptBtn={user?.role === "assistant"}
-            rejectBtn={user?.role === "assistant"}
+            acceptBtn={user?.role !== "patient"}
+            rejectBtn={user?.role !== "patient"}
             handleAccept={handleApprove}
             handleReject={handleReject}
           />

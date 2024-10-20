@@ -6,8 +6,9 @@ import {
   updateAppointment,
 } from "../apis/appointment/appointment";
 import { createNotification } from "../apis/notification/notification";
-import { getAllschedules } from "../apis/schedule/schedule";
+import { getAllSchedules } from "../apis/schedule/schedule";
 import CustomToaster from "./CustomToaster";
+import moment from "moment";
 
 export default function CreateAppointmentSchedule({
   setIsUpdated,
@@ -15,17 +16,25 @@ export default function CreateAppointmentSchedule({
   setscheduleSelecteDoctor,
   setscheduleSelectePatient,
   selectedAppointmentId,
+  selectedAppointment,
 }) {
   const [errors, setErrors] = useState();
   const [doctors, setDoctors] = useState([]);
   const [doctorSchedules, setDoctorSchedules] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formDataForAssistant, setFormDataForAssistant] = useState({
+    ...selectedAppointment,
+    patient_id: setscheduleSelectePatient,
+    doctor_id: setscheduleSelecteDoctor,
+    status: setscheduleSelectePatient?.status,
     schedule_date: "",
     start_time: "",
     end_time: "",
   });
 
+  useEffect(() => {
+    console.log({ formDataForAssistant });
+  }, [formDataForAssistant]);
   const onChangeFormData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -52,8 +61,9 @@ export default function CreateAppointmentSchedule({
   useEffect(() => {
     if (setscheduleSelecteDoctor !== "") {
       setDataLoading(true);
-      getAllschedules(setscheduleSelecteDoctor)
+      getAllSchedules(setscheduleSelecteDoctor)
         .then((res) => {
+          console.log({ res });
           if (Object.keys(res?.data).length > 0) {
             setDoctorSchedules(res?.data?.free_slots);
             setDataLoading(false);
@@ -233,13 +243,17 @@ export default function CreateAppointmentSchedule({
                       <span className="text-primary font-semibold">
                         Starting time:
                       </span>{" "}
-                      {formDataForAssistant?.start_time}
+                      {moment(formDataForAssistant?.start_time, "HH:mm").format(
+                        "hh:mm A"
+                      )}
                     </span>
                     <span>
                       <span className="text-error font-semibold">
                         End time:
                       </span>{" "}
-                      {formDataForAssistant?.end_time}
+                      {moment(formDataForAssistant?.end_time, "HH:mm").format(
+                        "hh:mm A"
+                      )}
                     </span>
                   </div>
                 </>

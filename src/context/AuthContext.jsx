@@ -6,6 +6,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getUserByToken } from "../apis/auth/auth";
 import CustomToaster from "../components/CustomToaster";
+import { useNavigate } from "react-router-dom";
 
 // Create the authentication context
 export const AuthContext = createContext();
@@ -21,35 +22,32 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
       setIsAuthenticated(false);
+      window.location.reload();
     }
   };
 
   useEffect(() => {
-    setInterval(() => {
-      const token = localStorage.getItem("token");
-      if (isAuthenticated || token) {
-        getUserByToken()
-          .then((res) => {
-            localStorage.setItem("userData", JSON.stringify(res?.data));
-            localStorage.setItem("token", res?.token);
-            setIsAuthenticated(true);
-          })
-          .catch((error) => {
-            console.log("hit logout");
-            setLogout();
-            toast.custom((t) => (
-              <CustomToaster
-                t={t}
-                type={"error"}
-                text={`ID: 00128 - ${error?.response?.data?.message}`}
-              />
-            ));
-          });
-      } else {
-        console.log("hit logout");
-        setLogout();
-      }
-    }, 10000);
+    const token = localStorage.getItem("token");
+    if (isAuthenticated || token) {
+      getUserByToken()
+        .then((res) => {
+          localStorage.setItem("userData", JSON.stringify(res?.data));
+          localStorage.setItem("token", res?.token);
+          setIsAuthenticated(true);
+        })
+        .catch((error) => {
+          setLogout();
+          toast.custom((t) => (
+            <CustomToaster
+              t={t}
+              type={"error"}
+              text={`ID: 00128 - ${error?.response?.data?.message}`}
+            />
+          ));
+        });
+    } else {
+      setLogout();
+    }
   }, [isAuthenticated]);
 
   return (

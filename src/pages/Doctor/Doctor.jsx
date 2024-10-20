@@ -13,12 +13,11 @@ export default function Doctor() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
-
+  const [isIsUpdated, setIsIsUpdated] = useState(0);
   useEffect(() => {
     setIsLoading(true);
     getUserByRole("doctor")
       .then((res) => {
-        console.log(res?.data);
         setData(
           res?.data.map((doctor) => ({
             id: doctor?._id,
@@ -42,7 +41,7 @@ export default function Doctor() {
           />
         ));
       });
-  }, [isOpenPopup]);
+  }, [isIsUpdated]);
 
   return (
     <>
@@ -64,7 +63,10 @@ export default function Doctor() {
             <MdOutlineCancel className="text-error text-2xl" />
           </button>
 
-          <CreateDoctor setIsOpenPopup={setIsOpenPopup} />
+          <CreateDoctor
+            setIsOpenPopup={setIsOpenPopup}
+            setIsIsUpdated={setIsIsUpdated}
+          />
         </div>
       </Popup>
       <nav className={``}>
@@ -85,7 +87,11 @@ export default function Doctor() {
         ) : (
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {data.map((doctor, index) => (
-              <DoctorCard key={index} data={doctor} />
+              <DoctorCard
+                key={index}
+                data={doctor}
+                setIsUpdated={setIsIsUpdated}
+              />
             ))}
           </div>
         )}

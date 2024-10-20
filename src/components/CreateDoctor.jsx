@@ -6,7 +6,13 @@ import CustomToaster from "./CustomToaster";
 import { createSchedule } from "../apis/schedule/schedule";
 import moment from "moment";
 
-export default function CreateDoctor({ setIsOpenPopup, id }) {
+export default function CreateDoctor({
+  setIsOpenPopup,
+  id,
+  setIsIsUpdated = (e) => {
+    e;
+  },
+}) {
   const [dataLoading, setDataLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -81,6 +87,7 @@ export default function CreateDoctor({ setIsOpenPopup, id }) {
             doctor_id: res?.id,
             free_slots: scheduleData,
           });
+          setIsIsUpdated(Math.random());
           Swal.fire("Created!", `The doctor has been approved.`, "success");
         })
         .catch((error) => {

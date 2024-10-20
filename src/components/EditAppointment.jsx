@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { createAppointment } from '../apis/appointment/appointment';
-import { getUserByRole } from '../apis/auth/auth';
-import { getAllschedules } from '../apis/schedule/schedule';
+import React, { useEffect, useState } from "react";
+import { createAppointment } from "../apis/appointment/appointment";
+import { getUserByRole } from "../apis/auth/auth";
+import { getAllSchedules } from "../apis/schedule/schedule";
 
 export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
   const [errors, setErrors] = useState();
   const [doctors, setDoctors] = useState([]);
   const [doctorSchedules, setDoctorSchedules] = useState([]);
   const [formDataForAssistant, setFormDataForAssistant] = useState({
-    name: '',
-    email: '',
-    doctor_id: '',
-    schedule_date: '',
+    name: "",
+    email: "",
+    doctor_id: "",
+    schedule_date: "",
   });
 
   const onChangeFormData = (e) => {
@@ -25,7 +25,7 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
 
   //   GET ALL DOCTORS
   useEffect(() => {
-    getUserByRole('doctor').then((res) => {
+    getUserByRole("doctor").then((res) => {
       console.log(res);
       setDoctors(res?.data);
     });
@@ -33,8 +33,8 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
 
   // GET SCHEDULE FREE SLOTS
   useEffect(() => {
-    if (formDataForAssistant?.doctor_id !== '') {
-      getAllschedules(formDataForAssistant?.doctor_id)
+    if (formDataForAssistant?.doctor_id !== "") {
+      getAllSchedules(formDataForAssistant?.doctor_id)
         .then((res) => {
           if (Object.keys(res?.data).length > 0) {
             setDoctorSchedules(res?.data?.free_slots);
@@ -51,38 +51,38 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
     const newErrors = {};
 
     // Validate Name
-    if (!formDataForAssistant.name || formDataForAssistant.name.trim() === '') {
-      newErrors.name = 'Name is required';
+    if (!formDataForAssistant.name || formDataForAssistant.name.trim() === "") {
+      newErrors.name = "Name is required";
     }
 
     // Validate email
     if (
       !formDataForAssistant.email ||
-      formDataForAssistant.email.trim() === ''
+      formDataForAssistant.email.trim() === ""
     ) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (
       !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(
         formDataForAssistant.email.trim()
       )
     ) {
-      newErrors.email = 'Invalid email';
+      newErrors.email = "Invalid email";
     }
 
     // VALIDATE DOCTOR
     if (
       !formDataForAssistant.doctor_id ||
-      formDataForAssistant.doctor_id.trim() === ''
+      formDataForAssistant.doctor_id.trim() === ""
     ) {
-      newErrors.doctor_id = 'Doctor is required';
+      newErrors.doctor_id = "Doctor is required";
     }
 
     // VALIDATE SCHEDULE
     if (
       !formDataForAssistant.schedule_date ||
-      formDataForAssistant.schedule_date.trim() === ''
+      formDataForAssistant.schedule_date.trim() === ""
     ) {
-      newErrors.schedule_date = 'Schedule date is required';
+      newErrors.schedule_date = "Schedule date is required";
     }
 
     setErrors(newErrors);
@@ -145,8 +145,9 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
             type="text"
             name="doctor_id"
             id="doctor_id"
-            defaultValue={formDataForAssistant?.doctor_id}>
-            <option value={''}>Select Doctor</option>
+            defaultValue={formDataForAssistant?.doctor_id}
+          >
+            <option value={""}>Select Doctor</option>
             {doctors.map((doc, i) => (
               <option key={i} value={doc?._id}>
                 {doc?.name}
@@ -167,8 +168,9 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
             type="text"
             name="schedule_date"
             id="schedule_date"
-            defaultValue={formDataForAssistant?.schedule_date}>
-            <option value={''}>Select Schedule</option>
+            defaultValue={formDataForAssistant?.schedule_date}
+          >
+            <option value={""}>Select Schedule</option>
             {doctorSchedules.map((sche, i) => (
               <option key={i} value={sche?.date}>
                 {sche?.date}
@@ -183,14 +185,17 @@ export default function CreateAppointment({ setIsUpdated, setAddPopup }) {
         </label>
 
         <div
-          className={`flex justify-center md:justify-end items-center gap-5 mt-10`}>
+          className={`flex justify-center md:justify-end items-center gap-5 mt-10`}
+        >
           <button
-            className={`transition-all duration-150 hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-base-100 bg-primary shadow-md`}>
+            className={`transition-all duration-150 hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-base-100 bg-primary shadow-md`}
+          >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className={`transition-all duration-150 text-white hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-secondary bg-secondary shadow-md shadow-secondary`}>
+            className={`transition-all duration-150 text-white hover:scale-90 border-2 px-5 w-32 py-1 rounded-full border-secondary bg-secondary shadow-md shadow-secondary`}
+          >
             Create
           </button>
         </div>

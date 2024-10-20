@@ -13,13 +13,11 @@ export default function Dashboard() {
     user?.role === "assistant" ? true : false
   );
   const [data, setData] = useState();
-  console.log({ user });
   useEffect(() => {
     if (user?.role === "assistant") {
       setIsLoading(true);
       getDashboardData()
         .then((res) => {
-          console.log(res?.data);
           setData(res?.data);
           setIsLoading(false);
         })
@@ -36,16 +34,16 @@ export default function Dashboard() {
     }
   }, []);
   return (
-    <>
-      <nav className={``}>
-        <Navbar title={"Dashboard"} />
-      </nav>
+    <div className={`h-[calc(100vh-5rem)]`}>
+      <Navbar title={"Dashboard"} />
       {isLoading ? (
         <CustomLoading />
       ) : (
-        <div className="px-10 py-5 bg-offwhite">
-          <div className="w-full flex items-center justify-between h-40 bg-base-100 shadow-lg rounded-3xl overflow-hidden">
-            <div className="bg-primary w-72 h-full rounded-3xl shadow-lg px-5 py-5">
+        <div className="w-full h-[calc(100vh-10rem)]">
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 p-10`}
+          >
+            <div className="bg-gradient-to-tr to-blue-600 from-primary w-full h-full rounded-xl shadow-lg px-5 py-5">
               <div className="flex items-center gap-5">
                 <img
                   className="w-12 h-12 object-cover rounded-lg shadow-md"
@@ -67,33 +65,39 @@ export default function Dashboard() {
                 </h3>
               </div>
             </div>
+
             {user?.role === "assistant" ? (
-              <div className="flex justify-evenly h-full w-full py-5">
-                <div className="text-black w-1/3">
-                  <h1 className="text-center font-semibold text-gray-400">
+              <>
+                {/* PATIENT  */}
+                <div className="bg-gradient-to-tr to-blue-600 from-primary w-full h-full rounded-xl shadow-lg px-5 py-5">
+                  <h1 className="text-center font-semibold text-white">
                     Patients
                   </h1>
-                  <span className="text-8xl text-gray-700 font-semibold text-center w-full block">
+                  <span className="text-6xl text-white font-semibold text-center w-full block">
                     {data?.patients}
                   </span>
                 </div>
-                <div className="text-black w-1/3">
-                  <h1 className="text-center font-semibold text-gray-400">
+
+                {/* APPOINMENTS  */}
+                <div className="bg-gradient-to-tr to-blue-600 from-primary w-full h-full rounded-xl shadow-lg px-5 py-5">
+                  <h1 className="text-center font-semibold text-white">
                     Appointments
                   </h1>
-                  <span className="text-8xl text-gray-700 font-semibold text-center w-full block">
+                  <span className="text-6xl text-white font-semibold text-center w-full block">
                     {data?.appointments}
                   </span>
                 </div>
-                <div className="text-black w-1/3">
-                  <h1 className="text-center font-semibold text-gray-400">
+
+                {/* DOCTORS  */}
+                <div className="bg-gradient-to-tr to-blue-600 from-primary w-full h-full rounded-xl shadow-lg px-5 py-5">
+                  <h1 className="text-center font-semibold text-white">
                     Doctors
                   </h1>
-                  <span className="text-8xl text-gray-700 font-semibold text-center w-full block">
+                  <span className="text-6xl text-white font-semibold text-center w-full block">
                     {data?.doctors}
                   </span>
                 </div>
-              </div>
+              </>
             ) : (
               ""
             )}
@@ -104,6 +108,6 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

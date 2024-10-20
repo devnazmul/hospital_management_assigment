@@ -93,3 +93,20 @@ export const login = async (data) => {
       throw err;
     });
 };
+export const deleteUser = async (id) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
+  return await axios
+    .delete(`/api/v1/auth/delete/${id}`, config)
+    .then((res) => {
+      return res?.data;
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
